@@ -52,7 +52,6 @@ const updateTask = async (id, taskData) => {
   }
 };
 
-// Eliminar una tarea
 const deleteTask = async (id) => {
   try {
     await dbPs(tablet_task).where({ id }).del();
