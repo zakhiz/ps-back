@@ -1,0 +1,25 @@
+{
+  "name": "porthos",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js --watch",
+    "dev": "nodemon src/app.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "Jimmy Sebastian Higa Ramirez",
+  "license": "ISC",
+  "description": "Prueba técnica para Porthos S.A., backend desarrollado con Node.js y SQLite.",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "nodemon": "^3.1.9",
+    "sqlite3": "^5.1.7"
+  }
+}
