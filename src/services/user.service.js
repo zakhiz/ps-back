@@ -4,7 +4,7 @@ import { Configstatus } from '../utils/constants.util.js';
 import jwt from 'jsonwebtoken';
 import configurationVariables from "../config/variables.config.js";
 
-const {confict, bad_request, ok} = Configstatus;
+const {confict_status, bad_request, ok} = Configstatus;
 const numberHash = 10;
 
 
@@ -12,9 +12,9 @@ const registerUser = async (dataUser) => {
         const {fullName, email, password} = dataUser;
         
         const userModel = [fullName, trimEmail(email), password];
-    
+        
         if (userModel.some(usr => !usr)) {
-            
+                        
             const errorStatusIncomplete = {
                 status : bad_request,
                 error_description: "Campos imcompletos",
@@ -24,12 +24,13 @@ const registerUser = async (dataUser) => {
         }
 
         const exist = await getUserByEmail(trimEmail(email));
+        
         if (!exist) {
             
             const hashedPassword = await createHash({password, countHast : numberHash});
             const newModelUser = {
                 fullName,
-                email: emailTrim,
+                email: email,
                 password: hashedPassword
             };
             

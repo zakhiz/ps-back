@@ -4,10 +4,19 @@ import createTaskTable from './schemas/task.schemas.js';
 import createUserTable from './schemas/user.schemas.js';
 import userRoute from './routes/user.route.js';
 import taskRoute from './routes/task.route.js';
+import cors from 'cors'
+
+
+
 const app = express();
 
 app.use(express.json());
-
+app.use(cors({
+        origin: 'http://localhost:5173',
+        methods:['GET','POST','PUT','DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials:true
+}));
 createTaskTable();
 createUserTable();
 

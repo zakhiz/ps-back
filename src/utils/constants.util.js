@@ -19,7 +19,8 @@ const taskInterface  = {
     title: 'title',
     description: 'description',
     user_id: 'user_id',
-    status: 'status'
+    status: 'status',
+    dueDate: 'due_date'
 }
 
 
@@ -28,7 +29,9 @@ const Configstatus = {
     confict_status: 409,
     bad_request: 400,
     ok: 200,
-    not_found: 404
+    not_found: 404,
+    Unauthorized_Token: 401,
+    notContentInDb : 204 
 }
 
 export {dBConfigVariables , userInterface, taskInterface, Configstatus};

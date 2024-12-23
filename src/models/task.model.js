@@ -5,8 +5,10 @@ const { tablet_task } = dBConfigVariables.tableName;
 
 
 const createTask = async (taskData) => {
+  
   try {
     const [newTask] = await dbPs(tablet_task).insert(taskData).returning('*');
+    
     return newTask;
   } catch (error) {
     console.error("Error al crear la tarea:", error);
@@ -24,6 +26,7 @@ const getAllTasks = async () => {
 };
 
 const getTaskByTitle = async (title) => {
+  
   try {
     return await dbPs(tablet_task).where({ title }).first();
   } catch (error) {
@@ -32,20 +35,37 @@ const getTaskByTitle = async (title) => {
   }
 };
 
-
-const getTaskById = async (id) => {
+const getTasksByUserId = async (userId) => {
   try {
-    return await dbPs(tablet_task).where({ id }).first();
+    return await dbPs(tablet_task).where({ user_id: userId });
   } catch (error) {
-    console.error(`Error al obtener la tarea con ID ${id}:`, error);
-    throw new Error(`Error al obtener la tarea con ID ${id}`);
+    console.error(`Error al obtener las tareas del usuario con ID ${userId}:`, error);
+    throw new Error(`Error al obtener las tareas del usuario con ID ${userId}`);
   }
 };
 
-const updateTask = async (id, taskData) => {
+const getTaskById = async (id) => {
+
   try {
+    const res = await dbPs(tablet_task).where({ id }).first();
+    
+    if (!res) {
+      console.log(`No se encontró ninguna tarea con ID ${id}`);
+    }
+    return res;
+  } catch (error) {
+    console.error(`Error al obtener la tarea con ID ${id}:`, error.message);
+    throw error; // Asegúrate de propagar el error si necesitas manejarlo en otro lugar
+  }
+};
+
+
+const updateTask = async ({id}, taskData) => {
+  
+  try {
+    
     await dbPs(tablet_task).where({ id }).update(taskData);
-    return await getTaskById(id); 
+    return await dbPs(tablet_task).where({ id }).first();
   } catch (error) {
     console.error(`Error al actualizar la tarea con ID ${id}:`, error);
     throw new Error(`Error al actualizar la tarea con ID ${id}`);
@@ -62,4 +82,4 @@ const deleteTask = async (id) => {
   }
 };
 
-export { createTask, getAllTasks, getTaskById, updateTask, deleteTask, getTaskByTitle };
+export { createTask, getAllTasks, getTaskById, updateTask, deleteTask, getTaskByTitle, getTasksByUserId };
