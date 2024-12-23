@@ -18,7 +18,7 @@ const createTaskTable = async () => {
             table.date(dueDate).notNullable();
         })
     }else{
-        console.log('error al crear task: ' + exist);
+        console.log('error al crear schema user solo lo muestra luego de haber creado la DB:' + exist);
         return
     }
 };
