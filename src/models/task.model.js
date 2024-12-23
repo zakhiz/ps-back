@@ -49,9 +49,6 @@ const getTaskById = async (id) => {
   try {
     const res = await dbPs(tablet_task).where({ id }).first();
     
-    if (!res) {
-      console.log(`No se encontró ninguna tarea con ID ${id}`);
-    }
     return res;
   } catch (error) {
     console.error(`Error al obtener la tarea con ID ${id}:`, error.message);
