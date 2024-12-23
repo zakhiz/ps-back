@@ -1,4 +1,4 @@
-import { createTaskService } from "../services/task.service.js";
+import { createTaskService, deleteTaskService, getAllTaskByUser, updateTaskService } from "../services/task.service.js";
 import { Configstatus } from '../utils/constants.util.js';
 
 const {ok, error_server} = Configstatus;
@@ -8,8 +8,8 @@ const createNewTaskController = async (req, res) => {
     const taskData = req.body; 
     
     const newTask = await createTaskService(taskData); 
-
-    return res.status(ok).send({status: ok, message: 'Tarea creada exitosamente', task: newTask });
+    
+    return res.status(ok).send({status: ok, message: 'Tarea creada exitosamente', data: newTask });
     
   } catch (error) {
 
@@ -21,15 +21,19 @@ const createNewTaskController = async (req, res) => {
   }
 };
 
-const getAllUserTasksController = async (req, res) => {
+const getTaskByUserController = async (req, res) => {
   try {
-    const userId = req.user.userId; 
-    const tasks = await getAllUserTasks(userId);
+    const { id } = req.query;
+
+    const tasksByUser = await getAllTaskByUser(id)
+
     return res.status(ok).send({
-      message: "Tareas obtenidas exitosamente",
-      tasks
+      status: ok,
+      data: tasksByUser,
+      message: "Tareas obtenidas exitosamente"
     });
   } catch (error) {
+     
     return res.status(error.status || error_server).send({
       status: error.status || error_server,
       error_description: error.error_description || 'Error desconocido',
@@ -38,31 +42,18 @@ const getAllUserTasksController = async (req, res) => {
   }
 };
 
-const getTaskDetailsController = async (req, res) => {
-  try {
-    const taskId = req.params.taskId; 
-    const task = await getTaskDetails(taskId); 
-    return res.status(ok).send({
-      message: "Tarea obtenida exitosamente",
-      task
-    });
-  } catch (error) {
-    return res.status(error.status || error_server).send({
-      status: error.status || error_server,
-      error_description: error.error_description || 'Error desconocido',
-      error: error.error || error.message
-    });
-  }
-};
 
 const updateTaskDetailsController = async (req, res) => {
   try {
-    const taskId = req.params.taskId; 
-    const taskData = req.body; 
-    const updatedTask = await updateTaskDetails(taskId, taskData);  
+    const taskId = req.query; 
+    const taskData = req.body;
+
+    const updatedTask = await updateTaskService(taskId, taskData);  
+
     return res.status(ok).send({
+      status:ok,
+      data: updatedTask,
       message: "Tarea actualizada exitosamente",
-      task: updatedTask
     });
   } catch (error) {
     return res.status(error.status || error_server).send({
@@ -75,9 +66,17 @@ const updateTaskDetailsController = async (req, res) => {
 
 const deleteTaskByIdController = async (req, res) => {
   try {
-    const taskId = req.params.taskId; 
-    const result = await deleteTaskById(taskId); 
-    return res.status(ok).send(result);
+    const taskId = req.query;
+     
+
+    const result = await deleteTaskService(taskId); 
+
+    return res.status(ok).send({
+      status: ok,
+      data: null,
+      message : "tarea eliminada correctamente"
+    });
+
   } catch (error) {
     return res.status(error.status || error_server).send({
       status: error.status || error_server,
@@ -89,8 +88,7 @@ const deleteTaskByIdController = async (req, res) => {
 
 export {
   createNewTaskController,
-  getAllUserTasksController,
-  getTaskDetailsController,
+  getTaskByUserController,
   updateTaskDetailsController,
   deleteTaskByIdController
 };
