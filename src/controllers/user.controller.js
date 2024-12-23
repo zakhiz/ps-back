@@ -24,14 +24,15 @@ const registerUserController = async (req, res) => {
 const loginUserController = async (req, res) => {
     try {
         const userData = req.body;
+        
         const userLogin = await loginUser(userData);
-        const {dataUser, token} = userLogin.data
+        const { token } = userLogin.data
         
         return res.cookie('jwt',token,{
           httpOnly: configurationVariables.JWT_COOKIE.HTTPONLY,
           sameSite: configurationVariables.JWT_COOKIE.SAMESITE,
           secure: configurationVariables.JWT_COOKIE.SECURE
-        }).status(ok).send({status: ok, message: 'Usuario logeado correctamente', user: dataUser });
+        }).status(ok).send({status: ok, message: 'Usuario logeado correctamente', data: userLogin.data });
 
     } catch (error) {
       return res.status(error.status || error_server)
