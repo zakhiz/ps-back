@@ -6,8 +6,6 @@ import userRoute from './routes/user.route.js';
 import taskRoute from './routes/task.route.js';
 import cors from 'cors'
 
-
-
 const app = express();
 
 app.use(express.json());
@@ -17,6 +15,7 @@ app.use(cors({
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials:true
 }));
+
 createTaskTable();
 createUserTable();
 

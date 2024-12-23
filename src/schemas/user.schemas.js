@@ -15,7 +15,7 @@ const createUserTable = async () => {
             table.string(password, 255).notNullable();
         })
     }else{
-        console.log('error al crear user: ' + exist);
+        console.log('error al crear schema user solo lo muestra luego de haber creado la DB: ' + exist);
         return
     }
 };
